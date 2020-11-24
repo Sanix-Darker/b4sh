@@ -2,10 +2,11 @@
 import uuid
 from datetime import datetime
 from app.model.Bash import Bash
+from random import randint
 from app.utils.helpers import *
 
 from app.utils.save_bash import save_bash
-from app.utils.get_bash import get_bash
+from app.utils.get_bash import get_bash, get_all_publics_bash
 from app.utils.update_bash import update_bash
 from app.utils.delete_bash import delete_bash
 
@@ -13,7 +14,7 @@ from app.utils.delete_bash import delete_bash
 # Example of a valid bash object
 # {
 #     "bash_id": "1234",
-#     "bash_short_id": "123:sad",
+#     "key": "123:sad",
 #     "hash": "sadoisankjcn2798382hnkjsacndskjcndsccdsc",
 #     "title": "A simple echo",
 #     "author": "d4rk3r",

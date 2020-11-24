@@ -26,7 +26,7 @@ class Bash(Model.Model):
             ],
             "properties": {
                 "bash_id": {"type": "string"},
-                "bash_short_id": {"type": "string"},
+                "key": {"type": "string"},
                 "password": {"type": "string"},
                 "hash": {"type": "string"},
                 "title": {"type": "string"},

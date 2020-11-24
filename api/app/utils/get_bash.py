@@ -64,3 +64,29 @@ def get_bash(bash_id: str, password) -> dict:
         }
 
     return result
+
+
+def remove_id(elt):
+    """
+
+    :param elt:
+    :return:
+    """
+    del elt["_id"]
+    return elt
+
+
+def get_all_publics_bash():
+    """
+
+    :return:
+    """
+    result = list(map(remove_id, list(B4().find_by({
+        "password": None
+    }))))
+
+    return {
+        "status": "success",
+        "code": 200,
+        "result": result
+    }

@@ -11,13 +11,18 @@ def build_input_bash(input_bash: dict, generated_hash: str) -> dict:
     :param generated_hash:
     :return:
     """
+    separator = [":", "|", "_", "]", "[", "%", "@", "$", "#", "!", "}", "{"]
     input_bash["bash_id"] = str(uuid.uuid4())
     input_bash["hash"] = generated_hash
-    input_bash["bash_short_id"] = input_bash["bash_id"][:4] + ":" + generated_hash[:4]
+
+    # we make the key
+    input_bash["key"] = input_bash["bash_id"][:2]
+    input_bash["key"] += separator[randint(0, len(separator) - 1)] + generated_hash[:2]
+    input_bash["key"] = md5(input_bash["key"].encode()).hexdigest()[:5]
 
     input_bash["date"] = str(datetime.now())
     if "title" not in input_bash:
-        input_bash["title"] = input_bash["bash_short_id"] + " | " + input_bash["date"]
+        input_bash["title"] = input_bash["key"] + " | " + input_bash["date"]
 
     if "password" in input_bash:
         input_bash["password"] = md5(input_bash["password"].encode()).hexdigest()
@@ -28,7 +33,15 @@ def build_input_bash(input_bash: dict, generated_hash: str) -> dict:
         "up_vote": 0,
         "down_vote": 0
     }
-    input_bash["history"] = []
+
+    # we append the first version of the history in the bash object
+    input_bash["history"] = [{
+        "version": 0,
+        "hash": generated_hash,
+        "key": input_bash["key"],
+        "content": input_bash["content"],
+        "date": input_bash["date"],
+    }]
 
     return input_bash
 
@@ -49,7 +62,7 @@ def validate_before_save(b4, input_bash: dict) -> dict:
             "status": "success",
             "code": "201",
             "message": "Your bash have been successfully saved to the server,"
-                       "\n you can try it by hitting : ./b4.sh {}".format(input_bash["bash_short_id"]),
+                       "\n you can try it by hitting : ./b4.sh {}".format(input_bash["key"]),
             "result": input_bash
         }
     else:

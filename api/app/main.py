@@ -27,10 +27,20 @@ def _api():
     })
 
 
-@app.route('/api/b', methods=['POST'])
+@app.route('/api/b', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def _create():
-    result = save_bash(request.json)
+    if request.method == 'GET':
+        result = get_all_publics_bash()
+    elif request.method == 'POST':
+        result = save_bash(request.json)
+    else:
+        result = {
+            "status": "error",
+            "code": "403",
+            "message": "action not allow"
+        }
+
     return result, result["code"]
 
 
@@ -40,17 +50,23 @@ def _get_update_delete(bash_id):
     result = {}
     if request.method == 'GET':
         result = get_bash(bash_id, request.args.get("password"))
-    if request.method == 'DELETE':
+    elif request.method == 'DELETE':
         result = delete_bash(bash_id, request.args.get("password"))
     elif request.method == 'PUT':
         result = update_bash(bash_id, request.args.get("password"))
+    else:
+        result = {
+            "status": "error",
+            "code": "403",
+            "message": "action not allow"
+        }
 
     return result, result["code"]
 
 
-@app.route('/api/r/<bash_short_id>', methods=['GET'])
+@app.route('/api/r/<key>', methods=['GET'])
 @cross_origin(supports_credentials=True)
-def _run(bash_short_id):
+def _run(key):
 
     return {}
 
