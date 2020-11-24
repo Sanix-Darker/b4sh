@@ -3,7 +3,7 @@
 from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS, cross_origin
 
-from app.utils import save_bash, get_bash, update_bash
+from app.utils import *
 
 app = Flask(__name__)
 CORS(app, support_credentials=True)
@@ -40,6 +40,8 @@ def _get_update_delete(bash_id):
     result = {}
     if request.method == 'GET':
         result = get_bash(bash_id, request.args.get("password"))
+    if request.method == 'DELETE':
+        result = delete_bash(bash_id, request.args.get("password"))
     elif request.method == 'PUT':
         result = update_bash(bash_id, request.args.get("password"))
 
