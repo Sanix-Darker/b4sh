@@ -18,24 +18,20 @@ def check_password_and_delete(target: dict, password) -> dict:
             })
             # the bash have been found with the correct password
             result = {
-                "status": "success",
                 "code": "200",
-                "message": "The bash have been deleted successfully",
+                "result": "The bash have been deleted successfully",
             }
         else:
             # incorrect password
             result = {
-                "status": "error",
                 "code": "400",
-                "message": "The password for this bash is incorrect, please try again !",
+                "reason": "The password for this bash is incorrect, please try again !",
             }
     else:
         # successfully retrieve a public bash
         result = {
-            "status": "error",
             "code": "403",
-            "message": "This is a public bash, you can't delete it, even if you're the author",
-            "result": target
+            "reason": "This is a public bash, you can't delete it, even if you're the author",
         }
 
     return result
@@ -54,9 +50,8 @@ def delete_bash(bash_id, password):
     else:
         # the bash doesn't exist at all
         result = {
-            "status": "error",
             "code": "404",
-            "message": "Your bash doesn't exist, you can create one using `./b4.sh c`",
+            "reason": "Your bash doesn't exist, you can create one using `./b4.sh c`",
         }
 
     return result

@@ -15,24 +15,19 @@ def check_password(target: dict, password) -> dict:
             del target["password"]
             # the bash have been found with the correct password
             result = {
-                "status": "success",
                 "code": "200",
-                "message": "The bash have been retrieved successfully",
                 "result": target
             }
         else:
             # incorrect password
             result = {
-                "status": "error",
                 "code": "400",
-                "message": "The password for this bash is incorrect, please try again !",
+                "reason": "The password for this bash is incorrect, please try again !",
             }
     else:
         # successfully retrieve a public bash
         result = {
-            "status": "success",
             "code": "200",
-            "message": "The bash have been retrieved successfully",
             "result": target
         }
 
@@ -58,9 +53,8 @@ def get_bash(bash_id: str, password) -> dict:
     else:
         # the bash doesn't exist at all
         result = {
-            "status": "error",
             "code": "404",
-            "message": "Your bash doesn't exist, you can create one using `./b4.sh c`",
+            "reason": "Bash doesn't exist, you can create one using `./b4.sh c`",
         }
 
     return result
@@ -88,8 +82,7 @@ def get_all_publics_bash() -> dict:
     }))))
 
     return {
-        "status": "success",
-        "code": 200,
+        "code": "200",
         "result": result
     }
 
@@ -109,23 +102,20 @@ def get_content_by_key(key: str) -> dict:
         find2 = B4().find_by({
             "history.key": key
         })
-        if find2.count() == 0:
+        if find2.count() > 0:
             result = {
-                "status": "success",
                 "code": "200",
                 "result": list(find2)[0]["content"]
             }
         else:
             result = {
-                "status": "error",
                 "code": "404",
-                "result": "# Sorry but any bash found with that key !"
+                "reason": "# Sorry but any bash found with that key !"
             }
     else:
         result = {
-            "status": "success",
             "code": "200",
-            "result": find["content"]
+            "result": list(find)[0]["content"]
         }
 
     return result

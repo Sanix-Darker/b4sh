@@ -1,6 +1,5 @@
 from app.utils import *
 
-
 B4 = Bash
 
 
@@ -59,18 +58,14 @@ def validate_before_save(b4, input_bash: dict) -> dict:
         b4(input_bash).save()
         del input_bash["_id"]
         result = {
-            "status": "success",
             "code": "201",
-            "message": "Your bash have been successfully saved to the server,"
-                       "\n you can try it by hitting : ./b4.sh {}".format(input_bash["key"]),
             "result": input_bash
         }
     else:
         result = {
-            "status": "error",
             "code": "400",
-            "message": "There are some errors with your inputs, please check the documentation again",
-            "error": str(check[1])
+            "reason": "There are some errors with your inputs,"
+                      "please check the documentation again ! {}".format(str(check[1]))
         }
 
     return result
@@ -94,9 +89,8 @@ def save_bash(input_bash: dict) -> dict:
         result = validate_before_save(B4, input_bash)
     else:
         result = {
-            "status": "error",
             "code": "400",
-            "message": "At least, please specify the 'content' of your bash!"
+            "reason": "At least, please specify the 'content' of your bash!"
         }
 
     return result
