@@ -1,0 +1,11 @@
+# to communicate with mongoDB
+pymongo
+# just for validators
+jsonschema
+
+# To manage configurations
+configparser
+
+# For the res-api service
+flask
+flask_cors
