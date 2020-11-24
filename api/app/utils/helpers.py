@@ -1,4 +1,4 @@
-from hashlib import sha256
+from hashlib import sha256, md5
 
 
 def gen_hash(_str: str) -> str:

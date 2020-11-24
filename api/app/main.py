@@ -37,11 +37,13 @@ def _create():
 @app.route('/api/b/<bash_id>', methods=['GET', 'PUT', 'DELETE'])
 @cross_origin(supports_credentials=True)
 def _get_update_delete(bash_id):
+    result = {}
     if request.method == 'GET':
-        result = get_bash(bash_id)
+        result = get_bash(bash_id, request.args.get("password"))
     elif request.method == 'PUT':
-        result = update_bash(bash_id)
-    return {}
+        result = update_bash(bash_id, request.args.get("password"))
+
+    return result, result["code"]
 
 
 @app.route('/api/r/<bash_short_id>', methods=['GET'])

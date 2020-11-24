@@ -1,8 +1,7 @@
-import uuid
+from app.utils import *
 
-from datetime import datetime
-from app.model.Bash import Bash
-from app.utils.helpers import *
+
+B4 = Bash
 
 
 def build_input_bash(input_bash: dict, generated_hash: str) -> dict:
@@ -14,11 +13,14 @@ def build_input_bash(input_bash: dict, generated_hash: str) -> dict:
     """
     input_bash["bash_id"] = str(uuid.uuid4())
     input_bash["hash"] = generated_hash
-    input_bash["bash_short_id"] = input_bash["bash_id"][:3] + ":" + generated_hash[:3]
+    input_bash["bash_short_id"] = input_bash["bash_id"][:4] + ":" + generated_hash[:4]
 
     input_bash["date"] = str(datetime.now())
     if "title" not in input_bash:
         input_bash["title"] = input_bash["bash_short_id"] + " | " + input_bash["date"]
+
+    if "password" in input_bash:
+        input_bash["password"] = md5(input_bash["password"].encode()).hexdigest()
 
     input_bash["stats"] = {
         "used_count": 0,
@@ -72,32 +74,11 @@ def save_bash(input_bash: dict) -> dict:
         # we generate the hash of the content
         generated_hash = gen_hash(input_bash["content"])
 
-        B4 = Bash
-        find = B4().find_by({
-            "hash": generated_hash
-        })
+        # We build our input_bash
+        input_bash = build_input_bash(input_bash, generated_hash)
 
-        if find.count() > 0:
-            target = list(find)[0]
-            # we delete some keys
-            del target["_id"]
-            if "password" in target:
-                del target["password"]
-
-            # there is an existing bash with the same hash
-            result = {
-                "status": "error",
-                "code": "409",
-                "message": "A bash already exist with the same input at yours!"
-                           "\n Please consider to use ./b.sh {}".format(target["bash_short_id"]),
-                "result": target
-            }
-        else:
-            # We build our input_bash
-            input_bash = build_input_bash(input_bash, generated_hash)
-
-            # We validate before save the bash
-            result = validate_before_save(B4, input_bash)
+        # We validate before save the bash
+        result = validate_before_save(B4, input_bash)
     else:
         result = {
             "status": "error",
