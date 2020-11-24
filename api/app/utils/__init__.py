@@ -6,7 +6,11 @@ from random import randint
 from app.utils.helpers import *
 
 from app.utils.save_bash import save_bash
-from app.utils.get_bash import get_bash, get_all_publics_bash
+from app.utils.get_bash import (
+    get_bash,
+    get_all_publics_bash,
+    get_content_by_key
+)
 from app.utils.update_bash import update_bash
 from app.utils.delete_bash import delete_bash
 

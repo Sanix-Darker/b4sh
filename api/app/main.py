@@ -15,6 +15,7 @@ def _index():
     return render_template("index.html");
 
 
+# /
 @app.route('/api', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def _api():
@@ -27,6 +28,7 @@ def _api():
     })
 
 
+# bash
 @app.route('/api/b', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def _create():
@@ -44,6 +46,7 @@ def _create():
     return result, result["code"]
 
 
+# bash/bash-id
 @app.route('/api/b/<bash_id>', methods=['GET', 'PUT', 'DELETE'])
 @cross_origin(supports_credentials=True)
 def _get_update_delete(bash_id):
@@ -64,11 +67,12 @@ def _get_update_delete(bash_id):
     return result, result["code"]
 
 
-@app.route('/api/r/<key>', methods=['GET'])
+# bash/raw/key
+@app.route('/api/b/r/<key>', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def _run(key):
-
-    return {}
+    result = get_content_by_key(key)
+    return result, result["code"]
 
 
 if __name__ == "__main__":

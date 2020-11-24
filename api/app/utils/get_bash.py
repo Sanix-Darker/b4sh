@@ -66,7 +66,7 @@ def get_bash(bash_id: str, password) -> dict:
     return result
 
 
-def remove_id(elt):
+def remove_id(elt: dict) -> dict:
     """
 
     :param elt:
@@ -76,11 +76,13 @@ def remove_id(elt):
     return elt
 
 
-def get_all_publics_bash():
+def get_all_publics_bash() -> dict:
     """
 
     :return:
     """
+    # we map all over the lit of the cursosr to remove
+    # the objecId none serializable object
     result = list(map(remove_id, list(B4().find_by({
         "password": None
     }))))
@@ -90,3 +92,40 @@ def get_all_publics_bash():
         "code": 200,
         "result": result
     }
+
+
+def get_content_by_key(key: str) -> dict:
+    """
+
+    :param key:
+    :return:
+    """
+    find = B4().find_by({
+        "key": key
+    })
+
+    if find.count() == 0:
+        # we need to do a deep search now
+        find2 = B4().find_by({
+            "history.key": key
+        })
+        if find2.count() == 0:
+            result = {
+                "status": "success",
+                "code": "200",
+                "result": list(find2)[0]["content"]
+            }
+        else:
+            result = {
+                "status": "error",
+                "code": "404",
+                "result": "# Sorry but any bash found with that key !"
+            }
+    else:
+        result = {
+            "status": "success",
+            "code": "200",
+            "result": find["content"]
+        }
+
+    return result
