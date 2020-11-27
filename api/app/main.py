@@ -24,7 +24,7 @@ def _api():
         "status": "success",
         'message': "Welcome to b4sh API.",
         "description": "This API allows you to CRUD your bash commands and share it to others",
-        "documentation": ""
+        "documentation": "https://documenter.getpostman.com/view/11958813/TVmHFL95"
     })
 
 
@@ -50,7 +50,6 @@ def _create():
 @app.route('/api/b/<bash_id>', methods=['GET', 'PUT', 'DELETE'])
 @cross_origin(supports_credentials=True)
 def _get_update_delete(bash_id):
-    result = {}
     if request.method == 'GET':
         result = get_bash(bash_id, request.args.get("password"))
     elif request.method == 'DELETE':

@@ -10,14 +10,11 @@ def build_input_bash(input_bash: dict, generated_hash: str) -> dict:
     :param generated_hash:
     :return:
     """
-    separator = [":", "|", "_", "]", "[", "%", "@", "$", "#", "!", "}", "{"]
     input_bash["bash_id"] = str(uuid.uuid4())
     input_bash["hash"] = generated_hash
 
     # we make the key
-    input_bash["key"] = input_bash["bash_id"][:2]
-    input_bash["key"] += separator[randint(0, len(separator) - 1)] + generated_hash[:2]
-    input_bash["key"] = md5(input_bash["key"].encode()).hexdigest()[:5]
+    input_bash["key"] = generate_key(input_bash["bash_id"], generated_hash)
 
     input_bash["date"] = str(datetime.now())
     if "title" not in input_bash:
@@ -55,6 +52,7 @@ def validate_before_save(b4, input_bash: dict) -> dict:
     check = b4().validate_input(input_bash)
     # Let's validate the input
     if check[0]:
+        # Then save
         b4(input_bash).save()
         del input_bash["_id"]
         result = {
