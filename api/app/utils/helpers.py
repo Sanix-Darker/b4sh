@@ -1,4 +1,14 @@
+import sys
+import traceback
 from hashlib import sha256, md5
+from random import randint
+
+
+def get_trace():
+    print("Exception in code:")
+    print("-" * 60)
+    traceback.print_exc(file=sys.stdout)
+    print("-" * 60)
 
 
 def gen_hash(_str: str) -> str:
@@ -23,3 +33,47 @@ def generate_key(bash_id: str, generated_hash: str):
     key = md5(key.encode()).hexdigest()[:5]
 
     return key
+
+
+def _del(key: str, _object: object):
+    try:
+        if key in _object:
+            del _object[key]
+        else:
+            print("[x] {} not in {}".format(key, _object))
+    except Exception as es:
+        print(es)
+        get_trace()
+
+    return _object
+
+
+def check_password(target: dict, password) -> dict:
+    """
+
+    :param target:
+    :param password:
+    :return:
+    """
+    if "password" in target:
+        if md5(str(password).encode()).hexdigest() == target["password"]:
+            # the bash have been found with the correct password
+            result = {
+                "code": "200",
+                "result": _del("password", target)
+            }
+        else:
+            # incorrect password
+            result = {
+                "code": "400",
+                "reason": "The password for this bash is incorrect, please try again !",
+            }
+    else:
+        # successfully retrieve a public bash
+        result = {
+            "code": "200",
+            "result": target
+        }
+
+    return result
+

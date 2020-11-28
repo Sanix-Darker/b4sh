@@ -1,37 +1,18 @@
 from app.utils import *
+from app.utils.helpers import _del
 
-B4 = Bash
 
-
-def check_password(target: dict, password) -> dict:
+def upgrade_used(bash_object: dict) -> dict:
     """
 
-    :param target:
-    :param password:
-    :return:
+    :param bash_object:
+    :return: bash_object
     """
-    if "password" in target:
-        if md5(str(password).encode()).hexdigest() == target["password"]:
-            del target["password"]
-            # the bash have been found with the correct password
-            result = {
-                "code": "200",
-                "result": target
-            }
-        else:
-            # incorrect password
-            result = {
-                "code": "400",
-                "reason": "The password for this bash is incorrect, please try again !",
-            }
-    else:
-        # successfully retrieve a public bash
-        result = {
-            "code": "200",
-            "result": target
-        }
+    if "stats" in bash_object:
+        if "used_count" in bash_object["stats"]:
+            bash_object["stats"]["used_count"] += 1
 
-    return result
+    return bash_object
 
 
 def get_bash(bash_id: str, password) -> dict:
@@ -41,15 +22,12 @@ def get_bash(bash_id: str, password) -> dict:
     :param password:
     :return:
     """
-    find = B4().find_by({
+    find = Bash().find_by({
         "bash_id": bash_id
     })
 
     if find.count() > 0:
-        target = list(find)[0]
-        # we delete some keys
-        del target["_id"]
-        result = check_password(target, password)
+        result = check_password(_del("_id", list(find)[0]), password)
     else:
         # the bash doesn't exist at all
         result = {
@@ -66,8 +44,7 @@ def remove_id(elt: dict) -> dict:
     :param elt:
     :return:
     """
-    del elt["_id"]
-    return elt
+    return _del("_id", elt)
 
 
 def get_all_publics_bash() -> dict:
@@ -77,7 +54,7 @@ def get_all_publics_bash() -> dict:
     """
     # we map all over the lit of the cursosr to remove
     # the objecId none serializable object
-    result = list(map(remove_id, list(B4().find_by({
+    result = list(map(remove_id, list(Bash().find_by({
         "password": None
     }))))
 
@@ -87,35 +64,56 @@ def get_all_publics_bash() -> dict:
     }
 
 
+def update_and_return_content(key: str, bash: dict):
+    """
+
+    :param bash:
+    :param key:
+    :return:
+    """
+    # we update the fact that it just have been use
+    bash_object = upgrade_used(bash)
+    Bash().update({
+        "key": key
+    }, bash_object)
+    Bash().update({
+        "history.key": key
+    }, bash_object)
+
+    bash_object = _del("bash_id", bash_object)
+    bash_object = _del("history", bash_object)
+
+    return {
+        "code": "200",
+        "result": bash_object
+    }
+
+
 def get_content_by_key(key: str) -> dict:
     """
 
     :param key:
     :return:
     """
-    find = B4().find_by({
+    find = Bash().find_by({
         "key": key
     })
 
     if find.count() == 0:
         # we need to do a deep search now
-        find2 = B4().find_by({
+        find2 = Bash().find_by({
             "history.key": key
         })
         if find2.count() > 0:
-            result = {
-                "code": "200",
-                "result": list(find2)[0]["content"]
-            }
+            # we update the fact that it just have been use
+            result = update_and_return_content(key, _del("_id", list(find2)[0]))
         else:
             result = {
                 "code": "404",
                 "reason": "# Sorry but any bash found with that key !"
             }
     else:
-        result = {
-            "code": "200",
-            "result": list(find)[0]["content"]
-        }
+        # we update the fact that it just have been use
+        result = update_and_return_content(key, _del("_id", list(find)[0]))
 
     return result

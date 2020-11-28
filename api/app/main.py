@@ -9,13 +9,14 @@ app = Flask(__name__)
 CORS(app, support_credentials=True)
 
 
+# /
 @app.route("/")
 @cross_origin(supports_credentials=True)
 def _index():
-    return render_template("index.html");
+    return render_template("index.html")
 
 
-# /
+# /api/
 @app.route('/api', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def _api():
@@ -28,7 +29,7 @@ def _api():
     })
 
 
-# bash
+# /api/bash
 @app.route('/api/b', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def _create():
@@ -38,15 +39,14 @@ def _create():
         result = save_bash(request.json)
     else:
         result = {
-            "status": "error",
             "code": "403",
-            "message": "action not allow"
+            "reason": "Action not allow"
         }
 
     return result, result["code"]
 
 
-# bash/bash-id
+# /api/bash/bash-id
 @app.route('/api/b/<bash_id>', methods=['GET', 'PUT', 'DELETE'])
 @cross_origin(supports_credentials=True)
 def _get_update_delete(bash_id):
@@ -55,18 +55,17 @@ def _get_update_delete(bash_id):
     elif request.method == 'DELETE':
         result = delete_bash(bash_id, request.args.get("password"))
     elif request.method == 'PUT':
-        result = update_bash(bash_id, request.args.get("password"))
+        result = update_bash(bash_id, request.json, request.args.get("password"))
     else:
         result = {
-            "status": "error",
             "code": "403",
-            "message": "action not allow"
+            "reason": "Action not allow"
         }
 
     return result, result["code"]
 
 
-# bash/raw/key
+# /api/bash/raw/key
 @app.route('/api/b/r/<key>', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def _run(key):
