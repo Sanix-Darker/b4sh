@@ -1,8 +1,0 @@
-- REST-API:
-    - CRUD on bash command
-
-- BASH SCRIPT
-    - CRUD on REST-API
-
-- WEB-UI:
-    - CRUD on REST-API
