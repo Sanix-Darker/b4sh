@@ -1,7 +1,5 @@
 from app.utils import *
 
-B4 = Bash
-
 
 def build_input_bash(input_bash: dict, generated_hash: str) -> dict:
     """
@@ -84,7 +82,7 @@ def save_bash(input_bash: dict) -> dict:
         input_bash = build_input_bash(input_bash, generated_hash)
 
         # We validate before save the bash
-        result = validate_before_save(B4, input_bash)
+        result = validate_before_save(Bash, input_bash)
     else:
         result = {
             "code": "400",

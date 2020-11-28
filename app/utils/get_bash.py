@@ -1,5 +1,4 @@
 from app.utils import *
-from app.utils.helpers import _del
 
 
 def upgrade_used(bash_object: dict) -> dict:
@@ -27,7 +26,7 @@ def get_bash(bash_id: str, password) -> dict:
     })
 
     if find.count() > 0:
-        result = check_password(_del("_id", list(find)[0]), password)
+        result = check_password(dell("_id", list(find)[0]), password)
     else:
         # the bash doesn't exist at all
         result = {
@@ -80,8 +79,8 @@ def update_and_return_content(key: str, bash: dict):
         "history.key": key
     }, bash_object)
 
-    bash_object = _del("bash_id", bash_object)
-    bash_object = _del("history", bash_object)
+    bash_object = dell("bash_id", bash_object)
+    bash_object = dell("history", bash_object)
 
     return {
         "code": "200",
@@ -106,7 +105,7 @@ def get_content_by_key(key: str) -> dict:
         })
         if find2.count() > 0:
             # we update the fact that it just have been use
-            result = update_and_return_content(key, _del("_id", list(find2)[0]))
+            result = update_and_return_content(key, dell("_id", list(find2)[0]))
         else:
             result = {
                 "code": "404",
@@ -114,6 +113,6 @@ def get_content_by_key(key: str) -> dict:
             }
     else:
         # we update the fact that it just have been use
-        result = update_and_return_content(key, _del("_id", list(find)[0]))
+        result = update_and_return_content(key, dell("_id", list(find)[0]))
 
     return result

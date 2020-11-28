@@ -3,7 +3,14 @@ import uuid
 from datetime import datetime
 from app.model.Bash import Bash
 from random import randint
-from app.utils.helpers import *
+from app.utils.helpers import (
+    md5,
+    dell,
+    get_trace,
+    gen_hash,
+    check_password,
+    generate_key,
+)
 
 from app.utils.save_bash import save_bash
 from app.utils.get_bash import (
@@ -11,7 +18,11 @@ from app.utils.get_bash import (
     get_all_publics_bash,
     get_content_by_key
 )
-from app.utils.update_bash import update_bash
+from app.utils.update_bash import (
+    update_bash,
+    up_vote,
+    down_vote
+)
 from app.utils.delete_bash import delete_bash
 
 

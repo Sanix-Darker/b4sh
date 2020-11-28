@@ -35,7 +35,7 @@ def generate_key(bash_id: str, generated_hash: str):
     return key
 
 
-def _del(key: str, _object: object):
+def dell(key: str, _object: object):
     try:
         if key in _object:
             del _object[key]
@@ -60,7 +60,7 @@ def check_password(target: dict, password) -> dict:
             # the bash have been found with the correct password
             result = {
                 "code": "200",
-                "result": _del("password", target)
+                "result": dell("password", target)
             }
         else:
             # incorrect password

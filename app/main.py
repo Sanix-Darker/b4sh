@@ -25,7 +25,7 @@ def _api():
         "status": "success",
         'message': "Welcome to b4sh API.",
         "description": "This API allows you to CRUD your bash commands and share it to others",
-        "documentation": "https://documenter.getpostman.com/view/11958813/TVmHFL95"
+        "documentation": "https://documenter.getpostman.com/view/11958813/TVmJhJmA"
     })
 
 
@@ -36,6 +36,7 @@ def _create():
     if request.method == 'GET':
         result = get_all_publics_bash()
     elif request.method == 'POST':
+        # Check if there is a parameter depends on and then add it or revoke
         result = save_bash(request.json)
     else:
         result = {
@@ -70,6 +71,22 @@ def _get_update_delete(bash_id):
 @cross_origin(supports_credentials=True)
 def _run(key):
     result = get_content_by_key(key)
+    return result, result["code"]
+
+
+# /api/bash/up-vote/key
+@app.route('/api/b/up/<key>', methods=['PATCH'])
+@cross_origin(supports_credentials=True)
+def _up(key):
+    result = up_vote(key)
+    return result, result["code"]
+
+
+# /api/bash/down-vote/key
+@app.route('/api/b/down/<key>', methods=['PATCH'])
+@cross_origin(supports_credentials=True)
+def _down(key):
+    result = down_vote(key)
     return result, result["code"]
 
 
