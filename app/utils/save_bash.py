@@ -40,18 +40,21 @@ def build_input_bash(input_bash: dict, generated_hash: str) -> dict:
     return input_bash
 
 
-def validate_before_save(b4, input_bash: dict) -> dict:
+def validate_before_save(input_bash: dict) -> dict:
     """
 
     :param b4:
     :param input_bash:
     :return:
     """
-    check = b4().validate_input(input_bash)
+    (check_status,
+     check_reason,
+     input_bash) = Bash().is_valid(input_bash)
+
     # Let's validate the input
-    if check[0]:
+    if check_status:
         # Then save
-        b4(input_bash).save()
+        Bash(input_bash).save()
         del input_bash["_id"]
         result = {
             "code": "201",
@@ -61,7 +64,7 @@ def validate_before_save(b4, input_bash: dict) -> dict:
         result = {
             "code": "400",
             "reason": "There are some errors with your inputs,"
-                      "please check the documentation again ! {}".format(str(check[1]))
+                      "please check the documentation again ! {}".format(str(check_reason))
         }
 
     return result
@@ -82,7 +85,7 @@ def save_bash(input_bash: dict) -> dict:
         input_bash = build_input_bash(input_bash, generated_hash)
 
         # We validate before save the bash
-        result = validate_before_save(Bash, input_bash)
+        result = validate_before_save(input_bash)
     else:
         result = {
             "code": "400",

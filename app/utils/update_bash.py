@@ -17,13 +17,25 @@ def update_bash(bash_id: str, bash_object: dict, password) -> dict:
         result = check_password(dell("_id", list(find)[0]), password)
         # if every thing is okay, then we update
         if result["code"] == "200":
-            Bash().update({
-                "bash_id": bash_id
-            }, bash_object)
-            result = {
-                "code": "200",
-                "result": "Update on the bash done successfully !"
-            }
+            # We do a quick check
+            (check_status,
+             check_reason,
+             bash_object) = Bash().is_valid(bash_object)
+
+            if check_status:
+                Bash().update({
+                    "bash_id": bash_id
+                }, bash_object)
+                result = {
+                    "code": "200",
+                    "result": "Update on the bash done successfully !"
+                }
+            else:
+                result = {
+                    "code": "400",
+                    "reason": "There are some errors with your inputs,"
+                              "please check the documentation again ! {}".format(str(check_reason))
+                }
     else:
         # the bash doesn't exist at all
         result = {

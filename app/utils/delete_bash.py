@@ -1,7 +1,5 @@
 from app.utils import *
 
-B4 = Bash
-
 
 def check_password_and_delete(target: dict, password) -> dict:
     """
@@ -13,7 +11,7 @@ def check_password_and_delete(target: dict, password) -> dict:
     if "password" in target:
         if md5(str(password).encode()).hexdigest() == target["password"]:
             del target["password"]
-            B4().delete({
+            Bash().delete({
                 "bash_id": target["bash_id"]
             })
             # the bash have been found with the correct password
@@ -38,7 +36,7 @@ def check_password_and_delete(target: dict, password) -> dict:
 
 
 def delete_bash(bash_id, password):
-    find = B4().find_by({
+    find = Bash().find_by({
         "bash_id": bash_id
     })
 

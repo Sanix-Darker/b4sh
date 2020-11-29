@@ -24,7 +24,7 @@ def _api():
     return jsonify({
         "status": "success",
         'message': "Welcome to b4sh API.",
-        "description": "This API allows you to CRUD your bash commands and share it to others",
+        "description": "This API allows you to CRUD your bash commands and share it to others.",
         "documentation": "https://documenter.getpostman.com/view/11958813/TVmJhJmA"
     })
 
@@ -33,15 +33,22 @@ def _api():
 @app.route('/api/b', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def _create():
-    if request.method == 'GET':
-        result = get_all_publics_bash()
-    elif request.method == 'POST':
-        # Check if there is a parameter depends on and then add it or revoke
-        result = save_bash(request.json)
-    else:
+    try:
+        if request.method == 'GET':
+            result = get_all_publics_bash()
+        elif request.method == 'POST':
+            # Check if there is a parameter depends on and then add it or revoke
+            result = save_bash(request.json)
+        else:
+            result = {
+                "code": "403",
+                "reason": "Action not allow!"
+            }
+    except Exception as es:
+        get_trace()
         result = {
-            "code": "403",
-            "reason": "Action not allow"
+            "code": "500",
+            "reason": "An error occur, please check logs!"
         }
 
     return result, result["code"]
@@ -51,16 +58,23 @@ def _create():
 @app.route('/api/b/<bash_id>', methods=['GET', 'PUT', 'DELETE'])
 @cross_origin(supports_credentials=True)
 def _get_update_delete(bash_id):
-    if request.method == 'GET':
-        result = get_bash(bash_id, request.args.get("password"))
-    elif request.method == 'DELETE':
-        result = delete_bash(bash_id, request.args.get("password"))
-    elif request.method == 'PUT':
-        result = update_bash(bash_id, request.json, request.args.get("password"))
-    else:
+    try:
+        if request.method == 'GET':
+            result = get_bash(bash_id, request.args.get("password"))
+        elif request.method == 'DELETE':
+            result = delete_bash(bash_id, request.args.get("password"))
+        elif request.method == 'PUT':
+            result = update_bash(bash_id, request.json, request.args.get("password"))
+        else:
+            result = {
+                "code": "403",
+                "reason": "Action not allow!"
+            }
+    except Exception as es:
+        get_trace()
         result = {
-            "code": "403",
-            "reason": "Action not allow"
+            "code": "500",
+            "reason": "An error occur, please check logs!"
         }
 
     return result, result["code"]
@@ -70,7 +84,15 @@ def _get_update_delete(bash_id):
 @app.route('/api/b/r/<key>', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def _run(key):
-    result = get_content_by_key(key)
+    try:
+        result = get_content_by_key(key)
+    except Exception as es:
+        get_trace()
+        result = {
+            "code": "500",
+            "reason": "An error occur, please check logs!"
+        }
+
     return result, result["code"]
 
 
@@ -78,7 +100,15 @@ def _run(key):
 @app.route('/api/b/up/<key>', methods=['PATCH'])
 @cross_origin(supports_credentials=True)
 def _up(key):
-    result = up_vote(key)
+    try:
+        result = up_vote(key)
+    except Exception as es:
+        get_trace()
+        result = {
+            "code": "500",
+            "reason": "An error occur, please check logs!"
+        }
+
     return result, result["code"]
 
 
@@ -86,7 +116,15 @@ def _up(key):
 @app.route('/api/b/down/<key>', methods=['PATCH'])
 @cross_origin(supports_credentials=True)
 def _down(key):
-    result = down_vote(key)
+    try:
+        result = down_vote(key)
+    except Exception as es:
+        get_trace()
+        result = {
+            "code": "500",
+            "reason": "An error occur, please check logs!"
+        }
+
     return result, result["code"]
 
 

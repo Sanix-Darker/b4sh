@@ -43,7 +43,7 @@ def remove_id(elt: dict) -> dict:
     :param elt:
     :return:
     """
-    return _del("_id", elt)
+    return dell("_id", elt)
 
 
 def get_all_publics_bash() -> dict:
@@ -63,6 +63,26 @@ def get_all_publics_bash() -> dict:
     }
 
 
+def append_content_depending_on(bash_object: dict) -> str:
+    """
+
+    :param bash_object:
+    :return:
+    """
+    content = bash_object["content"]
+    if "depends_on" in bash_object:
+        for elt in bash_object["depends_on"]:
+            find = Bash().find_by({
+                "key": elt
+            })
+            if find.count() == 0:
+                bash_object["depends_on"].remove(elt)
+                content += " \n# Bash - {} doesn't exist".format(elt)
+            else:
+                content += " \n# Depends on {} \n{}".format(elt, list(find)[0]["content"])
+    return content
+
+
 def update_and_return_content(key: str, bash: dict):
     """
 
@@ -72,6 +92,7 @@ def update_and_return_content(key: str, bash: dict):
     """
     # we update the fact that it just have been use
     bash_object = upgrade_used(bash)
+
     Bash().update({
         "key": key
     }, bash_object)
@@ -81,6 +102,9 @@ def update_and_return_content(key: str, bash: dict):
 
     bash_object = dell("bash_id", bash_object)
     bash_object = dell("history", bash_object)
+
+    # We append contents if there is some dependencies
+    bash_object["content"] = append_content_depending_on(bash_object) + " \n" + bash_object["content"]
 
     return {
         "code": "200",
