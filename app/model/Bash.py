@@ -20,10 +20,7 @@ class Bash(Model.Model):
                 "bash_id",
                 "key",
                 "hash",
-                "content",
-                "stats",
-                "history",
-                "date"
+                "content"
             ],
             "properties": {
                 "bash_id": {"type": "string"},
@@ -86,4 +83,4 @@ class Bash(Model.Model):
             # We check the depends-on
             data = self.depends_on_check(data)
 
-        return chk, data
+        return chk[0], chk[1], data

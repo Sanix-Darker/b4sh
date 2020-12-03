@@ -1,6 +1,19 @@
 from app.utils import *
 
 
+def upgrade_update(bash_object: dict) -> dict:
+    """
+
+    :param bash_object:
+    :return: bash_object
+    """
+    if "stats" in bash_object:
+        if "updated_count" in bash_object["stats"]:
+            bash_object["stats"]["updated_count"] += 1
+
+    return bash_object
+
+
 def update_bash(bash_id: str, bash_object: dict, password) -> dict:
     """
 
@@ -25,7 +38,7 @@ def update_bash(bash_id: str, bash_object: dict, password) -> dict:
             if check_status:
                 Bash().update({
                     "bash_id": bash_id
-                }, bash_object)
+                }, upgrade_update(bash_object))
                 result = {
                     "code": "200",
                     "result": "Update on the bash done successfully !"
