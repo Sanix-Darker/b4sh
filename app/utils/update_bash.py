@@ -49,6 +49,11 @@ def update_bash(bash_id: str, bash_object: dict, password) -> dict:
 
     if find.count() > 0:
         bash = list(find)[0]
+
+        bash_object["bash_id"] = bash["bash_id"]
+        bash_object["key"] = bash["key"]
+        bash_object["hash"] = bash["hash"]
+
         result = check_password(dell("_id", bash), password)
         # if every thing is okay, then we update
         if result["code"] == "200":
