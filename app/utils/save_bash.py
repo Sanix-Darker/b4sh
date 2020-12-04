@@ -16,7 +16,9 @@ def build_input_bash(input_bash: dict, generated_hash: str) -> dict:
 
     input_bash["date"] = str(datetime.now())
     if "title" not in input_bash:
-        input_bash["title"] = input_bash["key"] + " | " + input_bash["date"]
+        input_bash["title"] = "_" + input_bash["key"]
+    else:
+        input_bash["key"] = input_bash["title"] + "_" + input_bash["key"]
 
     if "password" in input_bash:
         input_bash["password"] = md5(input_bash["password"].encode()).hexdigest()

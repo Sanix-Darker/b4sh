@@ -69,17 +69,27 @@ def append_content_depending_on(bash_object: dict) -> str:
     :param bash_object:
     :return:
     """
-    content = bash_object["content"]
+    content = ""
     if "depends_on" in bash_object:
-        for elt in bash_object["depends_on"]:
-            find = Bash().find_by({
-                "key": elt
-            })
-            if find.count() == 0:
-                bash_object["depends_on"].remove(elt)
-                content += " \n# Bash - {} doesn't exist".format(elt)
-            else:
-                content += " \n# Depends on {} \n{}".format(elt, list(find)[0]["content"])
+        # we check if the bash is a list or something else
+        if type(bash_object["depends_on"]) == list:
+            for elt in bash_object["depends_on"]:
+                find = Bash().collection.find({
+                    "key": {'$regex': elt}
+                })
+
+                if find.count() == 0:
+                    try:
+                        bash_object["depends_on"].remove(elt)
+                    except Exception as es:
+                        get_trace()
+
+                    content += " \n# Bash - {} doesn't exist".format(elt)
+                else:
+                    content += " \n# Depends on {} \n{}".format(elt, list(find)[0]["content"])
+        else:
+            content += " \n# Bash - {} doesn't exist".format(bash_object["depends_on"])
+
     return content
 
 
@@ -118,15 +128,16 @@ def get_content_by_key(key: str) -> dict:
     :param key:
     :return:
     """
-    find = Bash().find_by({
-        "key": key
+    find = Bash().collection.find({
+        "key": {'$regex': key}
     })
 
     if find.count() == 0:
         # we need to do a deep search now
-        find2 = Bash().find_by({
-            "history.key": key
+        find2 = Bash().collection.find({
+            "history.key": {'$regex': key}
         })
+
         if find2.count() > 0:
             # we update the fact that it just have been use
             result = update_and_return_content(key, dell("_id", list(find2)[0]))

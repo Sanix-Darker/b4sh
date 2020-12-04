@@ -1,5 +1,8 @@
 # The init module for all CRUD in bash
+
 import uuid
+import re
+
 from datetime import datetime
 from app.model.Bash import Bash
 from random import randint
