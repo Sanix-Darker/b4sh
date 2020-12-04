@@ -60,14 +60,20 @@ def update_bash(bash_id: str, bash_object: dict, password) -> dict:
             if check_status:
                 # we add an element to the history
                 # we recompute the hash
-                bash_object = reformat_bash(bash, bash_object)
-                Bash().update({
-                    "bash_id": bash_id
-                }, bash_object)
-                result = {
-                    "code": "200",
-                    "result": "Update on the bash done successfully !"
-                }
+                if bash_object["content"] == bash["content"]:
+                    result = {
+                        "code": "400",
+                        "result": "Update can not be done, the content is the same!"
+                    }
+                else:
+                    bash_object = reformat_bash(bash, bash_object)
+                    Bash().update({
+                        "bash_id": bash_id
+                    }, bash_object)
+                    result = {
+                        "code": "200",
+                        "result": "Update on the bash done successfully !"
+                    }
             else:
                 result = {
                     "code": "400",
