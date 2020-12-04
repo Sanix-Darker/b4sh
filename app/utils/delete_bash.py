@@ -10,7 +10,7 @@ def check_password_and_delete(target: dict, password) -> dict:
     """
     if "password" in target:
         if md5(str(password).encode()).hexdigest() == target["password"]:
-            del target["password"]
+            target = dell(target["password"])
             Bash().delete({
                 "bash_id": target["bash_id"]
             })

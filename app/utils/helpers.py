@@ -40,7 +40,7 @@ def dell(key: str, _object: object):
         if key in _object:
             del _object[key]
         else:
-            print("[x] {} not in {}".format(key, _object))
+            print("[x] {} not in object.".format(key))
     except Exception as es:
         print(es)
         get_trace()

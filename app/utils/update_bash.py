@@ -1,15 +1,36 @@
 from app.utils import *
 
 
-def upgrade_update(bash_object: dict) -> dict:
+def reformat_bash(new_bash_object: dict, bash_object: dict) -> dict:
     """
 
-    :param bash_object:
-    :return: bash_object
+    :return:
     """
-    if "stats" in bash_object:
-        if "updated_count" in bash_object["stats"]:
-            bash_object["stats"]["updated_count"] += 1
+    # we remove the id
+    new_bash_object = dell("_id", new_bash_object)
+
+    bash_object["history"] = new_bash_object["history"]
+    bash_object["history"].insert(0, {
+        "version": len(new_bash_object["history"]) - 1,
+        "hash": new_bash_object["hash"],
+        "key": new_bash_object["key"],
+        "content": new_bash_object["content"],
+        "date": new_bash_object["date"],
+    })
+
+    bash_object["hash"] = gen_hash(bash_object["content"])
+    bash_object["date"] = str(datetime.now())
+    if "title" not in bash_object:
+        bash_object["title"] = "_" + bash_object["key"]
+    else:
+        bash_object["key"] = bash_object["title"].strip().replace(" ", "_") + "_" + bash_object["key"]
+
+    bash_object["stats"] = {
+        "used_count": new_bash_object["stats"]["used_count"],
+        "updated_count": new_bash_object["stats"]["used_count"] + 1,
+        "up_vote": new_bash_object["stats"]["up_vote"],
+        "down_vote": new_bash_object["stats"]["down_vote"]
+    }
 
     return bash_object
 
@@ -27,7 +48,8 @@ def update_bash(bash_id: str, bash_object: dict, password) -> dict:
     })
 
     if find.count() > 0:
-        result = check_password(dell("_id", list(find)[0]), password)
+        bash = list(find)[0]
+        result = check_password(dell("_id", bash), password)
         # if every thing is okay, then we update
         if result["code"] == "200":
             # We do a quick check
@@ -36,9 +58,12 @@ def update_bash(bash_id: str, bash_object: dict, password) -> dict:
              bash_object) = Bash().is_valid(bash_object)
 
             if check_status:
+                # we add an element to the history
+                # we recompute the hash
+                bash_object = reformat_bash(bash, bash_object)
                 Bash().update({
                     "bash_id": bash_id
-                }, upgrade_update(bash_object))
+                }, bash_object)
                 result = {
                     "code": "200",
                     "result": "Update on the bash done successfully !"

@@ -18,7 +18,7 @@ def build_input_bash(input_bash: dict, generated_hash: str) -> dict:
     if "title" not in input_bash:
         input_bash["title"] = "_" + input_bash["key"]
     else:
-        input_bash["key"] = input_bash["title"] + "_" + input_bash["key"]
+        input_bash["key"] = input_bash["title"].strip().replace(" ", "_") + "_" + input_bash["key"]
 
     if "password" in input_bash:
         input_bash["password"] = md5(input_bash["password"].encode()).hexdigest()

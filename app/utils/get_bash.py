@@ -63,6 +63,23 @@ def get_all_publics_bash() -> dict:
     }
 
 
+def get_all_private_bash(password: str) -> dict:
+    """
+
+    :return:
+    """
+    # we map all over the lit of the cursosr to remove
+    # the objecId none serializable object
+    result = list(map(remove_id, list(Bash().find_by({
+        "password": password
+    }))))
+
+    return {
+        "code": "200",
+        "result": result
+    }
+
+
 def append_content_depending_on(bash_object: dict) -> str:
     """
 

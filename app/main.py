@@ -35,7 +35,11 @@ def _api():
 def _create():
     try:
         if request.method == 'GET':
-            result = get_all_publics_bash()
+            # if a passsword is provide then return result for that password
+            if request.args.get("password") is not None:
+                result = get_all_private_bash(request.args.get("password"))
+            else:
+                result = get_all_publics_bash()
         elif request.method == 'POST':
             # Check if there is a parameter depends on and then add it or revoke
             result = save_bash(request.json)
