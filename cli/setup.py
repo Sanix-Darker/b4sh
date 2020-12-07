@@ -1,11 +1,13 @@
 import setuptools
+from b4sh.settings import VERSION
+
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="b4sh",
-    version="0.0.1",
+    version=VERSION,
     scripts=['./scripts/b4sh'],
     author="Sanix-darker",
     author_email="s4nixd@gmail.com",

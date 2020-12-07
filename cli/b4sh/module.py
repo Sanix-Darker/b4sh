@@ -1,6 +1,5 @@
-from b4sh.settings import B4SH_DIR, HOST
+from b4sh.settings import B4SH_DIR, HOST, VERSION
 from b4sh import *
-
 
 
 def save_b4sh(key: str, content: dict):
@@ -69,6 +68,7 @@ def check_b4sh(key):
         if online_check[0]:
             return online_check
 
+
 def get_stats(payload: dict):
     """
 
@@ -97,6 +97,7 @@ def see_stats(payload):
     if choice.lower() == "y" or choice.lower() == "yes":
         get_stats(payload)
 
+
 def run_content(payload):
     """
 
@@ -106,6 +107,7 @@ def run_content(payload):
         system(payload["content"])
     else:
         print("[x] Exited !")
+
 
 def payload_info(key, payload):
     """
@@ -118,6 +120,7 @@ def payload_info(key, payload):
 
     print("[-] > {}".format(payload["key"]))
     print("[-] > sha256: {}".format(payload["hash"]))
+
 
 def get(key: str):
     """
@@ -155,17 +158,24 @@ def cmd_parser(args: object):
     """
 
     """
+    # we check if the b4sh folder exist
+    # if not we install it
+    if not path.exists(B4SH_DIR):
+        makedirs(B4SH_DIR)
 
-    if args.get != None:
+    # the get method
+    if args.get is not None:
         get(args.get)
 
-    if args.create != None:
+    # the create method
+    if args.create is not None:
         return {
             "key": args.create,
             "method": "create"
         }
 
-    if args.find != None:
+    # The find method
+    if args.find is not None:
         return {
             "key": args.find,
             "method": "find"

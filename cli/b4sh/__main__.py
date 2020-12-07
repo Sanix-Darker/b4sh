@@ -1,31 +1,32 @@
 from b4sh.module import cmd_parser
 from b4sh import (
     B4SH_DIR,
+    VERSION,
     argparse,
-    path, 
+    path,
     makedirs
-) 
-
+)
 
 if __name__ == "__main__":
     # Initialize the arguments
     prs = argparse.ArgumentParser()
     prs.add_argument('-c', '--create',
-        help='To create a B4sh.',
-        type=str)
+                     help='To create a new B4sh.',
+                     type=str)
 
     prs.add_argument('-g', '--get',
-        help='The key/id of the b4sh.',
-        type=str)
+                     help='To get a b4sh by key/id.',
+                     type=str)
 
     prs.add_argument('-f', '--find',
-        help='To find a b4sh by text ',
-        type=str)
+                     help='To find a b4sh by title',
+                     type=str)
+
+    prs.add_argument('-v', '--version',
+                     action='version',
+                     help='To get the actual version of b4sh ',
+                     version="b4sh version {}".format(VERSION))
 
     prs = prs.parse_args()
-
-    # we check if the b4sh folder exist
-    if not path.exists(B4SH_DIR):
-        makedirs(B4SH_DIR)
 
     cmd_parser(prs)

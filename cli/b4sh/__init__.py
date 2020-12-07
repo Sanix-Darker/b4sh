@@ -6,4 +6,4 @@ import requests
 import json
 import argparse
 
-from b4sh.settings import B4SH_DIR
+from b4sh.settings import B4SH_DIR, HOST, VERSION
