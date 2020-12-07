@@ -1,0 +1,8 @@
+# to make requests and parse results
+requests
+
+# for tests
+pytest
+
+# others
+setuptools

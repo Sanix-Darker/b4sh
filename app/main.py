@@ -132,5 +132,28 @@ def _down(key):
     return result, result["code"]
 
 
+@app.route('/api/b/find', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def _find():
+    try:
+        string = request.args.get("q")
+        if string is not None:
+            result = find_b4sh(string, request.args.get("password"))
+        else:
+            # if a passsword is provide then return result for that password
+            if request.args.get("password") is not None:
+                result = get_all_private_bash(request.args.get("password"))
+            else:
+                result = get_all_publics_bash()
+    except Exception as es:
+        get_trace()
+        result = {
+            "code": "500",
+            "reason": "An error occur, please check logs!"
+        }
+
+    return result, result["code"]
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True, port=4352)

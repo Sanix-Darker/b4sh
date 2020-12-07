@@ -20,7 +20,8 @@ from app.utils.get_bash import (
     get_bash,
     get_all_publics_bash,
     get_all_private_bash,
-    get_content_by_key
+    get_content_by_key,
+    find_b4sh
 )
 from app.utils.update_bash import (
     update_bash,
@@ -48,3 +49,6 @@ from app.utils.delete_bash import delete_bash
 #     "history": [],
 #     "date": "2020-04-11 04:47:09"
 # }
+
+# for some long commands, we can save it on termbin
+# curl -d "username=mkyong&password=abc" termbin.com:9999 --output -
