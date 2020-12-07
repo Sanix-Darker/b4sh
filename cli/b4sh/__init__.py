@@ -1,7 +1,7 @@
 # __init__.py
 # All imports stuffs
 
-from os import system, path, makedirs
+from os import system, path, makedirs, listdir
 import requests
 import json
 import argparse

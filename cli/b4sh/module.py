@@ -177,6 +177,23 @@ def print_results(content: dict):
 
     return int(input("\n[?] Your choice (0 to quit):"))
 
+
+def choose_install(content: dict):
+    """
+
+    """
+    choice = print_results(content)
+
+    if choice == 0:
+        print("[x] Stopping b4sh.")
+    else:
+        if choice <= len(content["result"]):
+            # we try to get that key id bash
+            get(content["result"][choice-1]["key"])
+        else:
+            print("[x] This indice is not correct.")
+            exit()
+
 def find(text: str):
     """
     This method will search for available saved commands
@@ -192,23 +209,32 @@ def find(text: str):
     content = json.loads(r.content.decode().replace('\n', ''))
 
     if status:
-        choice = print_results(content)
-
-        if choice == 0:
-            print("[x] Stopping b4sh.")
-        else:
-            if choice <= len(content["result"]):
-                # we try to get that key id bash
-                get(content["result"][choice-1]["key"])
-            else:
-                print("[x] This indice is not correct.")
-                exit()
+        choose_install(content)
     else:
         print("[x] Error : {}".format(content["reason"]))
         exit()
 
     return status, content
 
+
+def list_all():
+    """
+    List all offline b4sh
+
+    """
+    list_offline_b4sh = listdir(B4SH_DIR)
+
+    content = {}
+    content["result"] = []
+    if len(list_offline_b4sh) > 0:
+        for l in list_offline_b4sh:
+            with open(B4SH_DIR + "/" + l, "r") as ffk:
+                content["result"].append(json.loads(ffk.read())["result"])
+
+        # then we parse results
+        choose_install(content)
+    else:
+        print("[x] 0 offline bash found in {}".format(B4SH_DIR))
 
 def cmd_parser(args: object):
     """
