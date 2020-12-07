@@ -1,6 +1,6 @@
 # b4sh
 
-Compose bash commands and save that with an id.
+Create, Use and share bash commands easily.
 
 ## Requirements
 
@@ -16,14 +16,14 @@ pip3 install b4sh
 
 ```shell
 # To install nginx for example !
-b4sh nginx_debian_3ee
+b4sh -g nginx_debian_3ee
 # This command will run
 sudo apt update
 sudo apt install nginx
 sudo service nginx status
 
 # For a custom command
-b4sh vim_445te
+b4sh -g vim_445te
 # This will run :
 apt update
 apt install wget unzip
