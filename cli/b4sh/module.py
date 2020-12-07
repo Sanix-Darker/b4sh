@@ -2,14 +2,24 @@ from b4sh.settings import B4SH_DIR, HOST, VERSION
 from b4sh import *
 
 
+def req_get(url):
+    """
+
+    """
+    try:
+        return requests.get(url, timeout=7)
+    except (requests.ConnectionError, requests.Timeout) as exception:
+        print("[x] No internet connection.")
+        return None
+
+
 def save_b4sh(key: str, content: dict):
     """
     To save a b4sh in the b4sh directory
     """
     if len(content) > 1:
         with open("{}/{}.json".format(B4SH_DIR, key), "w") as fii:
-            print("content: ", content)
-            json.dump(content["result"], fii, indent=4)
+            json.dump(content, fii, indent=4)
             print("[+] Saved content.")
     else:
         print("[x] Not saved, content empty")
@@ -31,17 +41,20 @@ def check_b4sh_online(key: str):
     """
     print("[-] Checking online : {}...".format(key))
 
-    r = requests.get("{}/b/r/{}".format(HOST, key))
+    r = req_get("{}/b/r/{}".format(HOST, key))
 
-    status = True if r.status_code == 200 else False
-    content = json.loads(r.content.decode().replace('\n', ''))
+    if r is not None:
+        status = True if r.status_code == 200 else False
+        content = json.loads(r.content.decode().replace('\n', ''))
 
-    if status:
-        print("[+] Saving it locally...")
-        save_b4sh(key, content)
+        if status:
+            print("[+] Saving it locally...")
+            save_b4sh(key, content)
+        else:
+            print("[x] Error : {}".format(content["reason"]))
+        return status, content
     else:
-        print("[x] Error : {}".format(content["reason"]))
-    return status, content
+        exit()
 
 
 def check_b4sh_offline(key: str):
@@ -86,16 +99,16 @@ def see_content(payload):
     """
     choice = input("[?] > See the content ? (Y/N): ")
     if choice.lower() == "y" or choice.lower() == "yes":
-        print(payload["content"])
+        print(payload["result"]["content"])
 
 
 def see_stats(payload):
     """
 
     """
-    choice = input("[?] > See stats (used, updates, up_votes...) ? (Y/N): ")
+    choice = input("\n[?] > See stats (used, votes...) ? (Y/N): ")
     if choice.lower() == "y" or choice.lower() == "yes":
-        get_stats(payload)
+        get_stats(payload["result"])
 
 
 def run_content(payload):
@@ -104,7 +117,7 @@ def run_content(payload):
     """
     choice = input("[?] > Execute it ? (Y/N): ")
     if choice.lower() == "y" or choice.lower() == "yes":
-        system(payload["content"])
+        system(payload["result"]["content"])
     else:
         print("[x] Exited !")
 
@@ -113,13 +126,14 @@ def payload_info(key, payload):
     """
 
     """
+
     print("[-] Getting : {}...".format(key))
     print("[-] - - -")
     if "author" in payload:
-        print("[+] > By {}".format(payload["author"]))
+        print("[+] > By {}".format(payload["result"]["author"]))
 
-    print("[-] > {}".format(payload["key"]))
-    print("[-] > sha256: {}".format(payload["hash"]))
+    print("[-] > {}".format(payload["result"]["key"]))
+    print("[-] > sha256: {}".format(payload["result"]["hash"]))
 
 
 def get(key: str):
@@ -153,6 +167,48 @@ def get(key: str):
     else:
         print("[x] This b4sh seems to not exist !")
 
+def print_results(content: dict):
+    """
+
+    """
+    print("[+] Listing results ({}) :".format(len(content["result"])))
+    for index, elt in enumerate(content["result"]):
+        print("[-] {}-) {}".format(index+1, elt["key"]))
+
+    return int(input("\n[?] Your choice (0 to quit):"))
+
+def find(text: str):
+    """
+    This method will search for available saved commands
+    An try to execute them.
+
+    """
+
+    print("[-] Searching for : {}...".format(text))
+
+    r = req_get("{}/b/find?q={}".format(HOST, text))
+
+    status = True if r.status_code == 200 else False
+    content = json.loads(r.content.decode().replace('\n', ''))
+
+    if status:
+        choice = print_results(content)
+
+        if choice == 0:
+            print("[x] Stopping b4sh.")
+        else:
+            if choice <= len(content["result"]):
+                # we try to get that key id bash
+                get(content["result"][choice-1]["key"])
+            else:
+                print("[x] This indice is not correct.")
+                exit()
+    else:
+        print("[x] Error : {}".format(content["reason"]))
+        exit()
+
+    return status, content
+
 
 def cmd_parser(args: object):
     """
@@ -176,7 +232,4 @@ def cmd_parser(args: object):
 
     # The find method
     if args.find is not None:
-        return {
-            "key": args.find,
-            "method": "find"
-        }
+        find(args.find)

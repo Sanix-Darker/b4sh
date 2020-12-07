@@ -37,6 +37,37 @@ def get_bash(bash_id: str, password) -> dict:
     return result
 
 
+def remove_elts(elt, array: list):
+    """
+
+    :param elt:
+    :param array:
+    :return:
+    """
+    for e in array:
+        elt = dell(e, elt)
+
+    return elt
+
+
+def remove_for_find(elt):
+    return remove_elts(elt,
+                       [
+                           "_id",
+                           "author",
+                           "title",
+                           "bash_id",
+                           "hash",
+                           "content",
+                           "description",
+                           "date",
+                           "stats",
+                           "history",
+                           "password"
+                       ]
+    )
+
+
 def find_b4sh(string: str, password) -> dict:
     """
     This method will fetch on title field for b4sh
@@ -46,14 +77,14 @@ def find_b4sh(string: str, password) -> dict:
     """
     result = {}
     if password is not None:
-        result = list(map(remove_id, list(Bash().find_by({
+        result = list(map(remove_for_find, list(Bash().collection.find({
             "title": {'$regex': string},
             "password": password
-        }))))
+        }, {"key": 1}))))
     else:
-        result = list(map(remove_id, list(Bash().find_by({
+        result = list(map(remove_for_find, list(Bash().collection.find({
             "title": {'$regex': string}
-        }))))
+        }, {"key": 1}))))
 
     return {
         "code": "200",
