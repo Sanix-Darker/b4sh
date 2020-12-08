@@ -34,11 +34,12 @@ optional arguments:
   -v,  --version To get the actual version of b4sh.
 ```
 
-- To create a custom list of bash commands :
+#### To create a custom list of bash commands :
 
-```shell
-# To create a custom b4sh
-$ b4sh -c 
+- To create a custom b4sh
+
+`$ b4sh -c`
+``` 
 [x] Starting b4sh...
 [-] --------------------
 [-] author : d4rk3r
@@ -52,10 +53,13 @@ $ b4sh -c
 [?] Content** ( In a new line, Ctrl-D to save the content ): 
 echo 'Hello World !'
 [+] b4sh hello_world_e48ec created/saved successfully !
+```
 
+- To create a custom b4sh command from a file
 
-# To create a custom b4sh command from a file
-$ b4sh -c script.sh
+`$ b4sh -c script.sh`
+
+```
 [x] Starting b4sh...
 [-] --------------------
 [-] author : d4rk3r
@@ -76,9 +80,12 @@ The `create` command will create a json file in `/home/$USER/.b4sh` or `C:/b4sh`
 -rw-r--r-- 1 d4rk3r d4rk3r 425 Dec  8 15:21 hello_world_e48ec.json
 ```
 
-- To search for a b4sh :
-```shell
-$ b4sh -f hello
+#### To search for a b4sh :
+
+You just have to use the parameter `find`.
+
+`b4sh -f hello`
+```
 [x] Starting b4sh...
 [-] Searching for : hello...
 [+] Listing results (1) :
@@ -104,8 +111,9 @@ Hello World !
 ```
 
 - To get a b4sh by key/id :
-```shell
-$ b4sh -g hello_world_e48ec
+
+`b4sh -g hello_world_e48ec`
+```
 [x] Starting b4sh...
 [-] Checking offline : hello_world_e48ec...
 [-] Getting : hello_world_e48ec...
@@ -126,8 +134,9 @@ Hello World !
 ```
 
 - To list all offline b4sh :
+
+`b4sh -ls`
 ```
-$ b4sh -ls
 [x] Starting b4sh...
 [+] Listing results (1) :
 [-] 1-) hello_world_e48ec
@@ -136,12 +145,6 @@ $ b4sh -ls
 [x] Stopping b4sh.
 ```
 
-- To get the version of the b4sh :
-```shell
-$ b4sh -v
-[x] Starting b4sh...
-[-] b4sh version 0.0.5
-```
 ## Author
 
 - [Sanix-darker](https://github.com/sanix-darker)
