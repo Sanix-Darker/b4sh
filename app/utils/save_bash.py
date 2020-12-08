@@ -80,15 +80,22 @@ def save_bash(input_bash: dict) -> dict:
     :return:
     """
     # We verify if all required are there
-    if "content" in input_bash:
-        # we generate the hash of the content
-        generated_hash = gen_hash(input_bash["content"])
+    if "content" in input_bash and len(input_bash["content"]) > 2:
+        # A security check for too high characters
+        if len(input_bash["content"]) > 15000:
+            result = {
+                "code": "400",
+                "reason": "The 'content' exceed the limit of characters it can not be saved !"
+            }
+        else:
+            # we generate the hash of the content
+            generated_hash = gen_hash(input_bash["content"])
 
-        # We build our input_bash
-        input_bash = build_input_bash(input_bash, generated_hash)
+            # We build our input_bash
+            input_bash = build_input_bash(input_bash, generated_hash)
 
-        # We validate before save the bash
-        result = validate_before_save(input_bash)
+            # We validate before save the bash
+            result = validate_before_save(input_bash)
     else:
         result = {
             "code": "400",
