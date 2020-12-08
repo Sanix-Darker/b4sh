@@ -1,10 +1,11 @@
 from os import getuid
 from sys import platform
+from pathlib import Path
 import pwd
 
 
-USERNAME = pwd.getpwuid(getuid())[0]
-B4SH_DIR = "C:/.b4sh" if platform == 'Windows' else "/home/{}/.b4sh".format(USERNAME)
+B4SH_DIR = str(Path.home()) + "/" + ".b4sh"
+print(B4SH_DIR)
 VERSION = "0.0.9"
 HOST = "https://b4sh.co/api"
 # HOST = "http://127.0.0.1:4352/api"

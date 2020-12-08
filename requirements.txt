@@ -9,3 +9,6 @@ configparser
 # For the res-api service
 flask
 flask_cors
+
+#crossplatform path
+pathlib
