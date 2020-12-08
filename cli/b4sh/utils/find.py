@@ -1,6 +1,7 @@
 # To find a b4sh
 from b4sh.utils import *
 from b4sh.utils import req_get
+from b4sh.utils.get import choose_install
 
 
 def find(text: str):
