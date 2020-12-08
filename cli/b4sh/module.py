@@ -452,13 +452,6 @@ def cmd_parser(args: object):
     if args.get is not None:
         get(args.get)
 
-    # the create method
-    if args.create is not None:
-        return {
-            "key": args.create,
-            "method": "create"
-        }
-
     # The find method
     if args.find is not None:
         find(args.find)
