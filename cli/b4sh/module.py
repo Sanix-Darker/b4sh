@@ -22,3 +22,7 @@ def cmd_parser(args: object):
     # The find method
     if args.find is not None:
         find(args.find)
+
+    # The find method
+    if args.run is not None:
+        run(args.run)

@@ -215,6 +215,8 @@ optional arguments:
 
   -f,  --find    To find a b4sh by name online, Ex: b4sh -f nginx.
 
+  -r,  --run     To run directly with the good key/id, Ex: b4sh -r nginx_eedrf4.
+
   -c,  --create  To create a new B4sh, Ex: b4sh -c / Or with a file_path, Ex: b4sh -c script.sh
 
   -ls, --list    To list all available offline/local b4sh shells.

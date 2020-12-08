@@ -23,6 +23,9 @@ if __name__ == "__main__":
             prs.add_argument('-f', '--find',
                              help='To find a b4sh by name online, Ex: b4sh -f nginx',
                              type=str)
+            prs.add_argument('-r', '--run',
+                             help='To run directly with the good key/id, Ex: b4sh -r nginx_eedrf4',
+                             type=str)
             prs.add_argument('-v', '--version',
                              action='version',
                              help='To get the actual version of b4sh, Ex: b4sh -v',

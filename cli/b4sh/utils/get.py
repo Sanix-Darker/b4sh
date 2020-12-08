@@ -37,6 +37,22 @@ def get(key: str):
         print("[x] This b4sh seems to not exist !")
 
 
+def run(key: str):
+    # We check if the b4sh exist locally
+    chk = check_b4sh(key)
+
+    if chk is not None:
+        if chk[0]:
+            payload = chk[1]
+
+            # To run content
+            run_content(payload)
+        else:
+            print("[x] This b4sh seems to not exist !")
+    else:
+        print("[x] This b4sh seems to not exist !")
+
+
 def choose_install(content: dict):
     """
 
