@@ -80,7 +80,6 @@ def save_bash(input_bash: dict) -> dict:
     :param input_bash:
     :return:
     """
-    print("input_bash: ", input_bash)
     # We verify if all required are there
     if "content" in input_bash:
         # we generate the hash of the content
