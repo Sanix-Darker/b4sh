@@ -4,20 +4,7 @@ Save, Manage and share your shell scripts commands.
 
 ## Requirements
 
-- nothing lol (If you're on a Linux system, you already have all you need)
-
-## Installation
-
-To get b4sh, just hit:
-```shell script
-wget -O - b4sh.co/static/dist/latest/b4.sh | bash
-
-# If you don't have wget instaled 
-# apt-get install wget # On Ubuntu/Debian
-# yum install wget # On CentOs
-# 
-
-```
+- Python (3.x recommended)
 
 ## Dev Deployment
 
@@ -35,7 +22,6 @@ Just hit:
 ```shell
 pip install -r requirements.txt
 ```
-
 
 ## Author
 
