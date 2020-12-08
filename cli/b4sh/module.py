@@ -1,3 +1,5 @@
+from b4sh.settings import B4SH_DIR
+
 from b4sh.utils import *
 
 

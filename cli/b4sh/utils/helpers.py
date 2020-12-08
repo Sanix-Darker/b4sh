@@ -195,6 +195,8 @@ def get_format_payload(conf: dict, content_file_path: str = "") -> dict:
     else:
         payload["content"] = get_content()
 
+    print("[-] Uploading the b4sh ...")
+
     return payload
 
 
