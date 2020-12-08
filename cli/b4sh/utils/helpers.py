@@ -180,7 +180,7 @@ def get_format_payload(conf: dict, content_file_path: str = "") -> dict:
     :param content_file_path:
     :return:
     """
-    payload = {"author": conf["author"], "title": rlinput("[?] Title : ", content_file_path),
+    payload = {"author": conf["author"], "title": rlinput("[?] Title : ", content_file_path.replace("./", "")),
                "description": input("[?] Description : ")}
     if len(content_file_path) > 2:
         # we check if the path of the shell file exist
