@@ -43,7 +43,10 @@ def choose_install(content: dict):
     :param content:
     :return:
     """
-    choice = print_results(content)
+    try:
+        choice = print_results(content)
+    except Exception as es:
+        choice = 0
 
     if choice == 0:
         print("[x] Stopping b4sh.")
