@@ -57,7 +57,9 @@ def validate_before_save(input_bash: dict) -> dict:
     if check_status:
         # Then save
         Bash(input_bash).save()
-        del input_bash["_id"]
+        input_bash = dell("_id", input_bash)
+        input_bash = dell("history", input_bash)
+        input_bash = dell("stats", input_bash)
         result = {
             "code": "201",
             "result": input_bash
@@ -78,6 +80,7 @@ def save_bash(input_bash: dict) -> dict:
     :param input_bash:
     :return:
     """
+    print("input_bash: ", input_bash)
     # We verify if all required are there
     if "content" in input_bash:
         # we generate the hash of the content
