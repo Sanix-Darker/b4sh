@@ -1,12 +1,8 @@
-from b4sh.module import cmd_parser, list_all, create_b4sh, paste_help
-from b4sh import (
-    B4SH_DIR,
-    VERSION,
-    argparse,
-    path,
-    makedirs
-)
+from b4sh import *
 from sys import argv
+
+from b4sh.utils.create import create_b4sh
+
 
 if __name__ == "__main__":
 

@@ -59,7 +59,6 @@ def validate_before_save(input_bash: dict) -> dict:
         Bash(input_bash).save()
         input_bash = dell("_id", input_bash)
         input_bash = dell("history", input_bash)
-        input_bash = dell("stats", input_bash)
         result = {
             "code": "201",
             "result": input_bash
