@@ -1,8 +1,10 @@
-venv
-config.txt
-*.json
-.history
 .vscode
-*_pycache__
-*.pyc
-*.idea
+*__pycache__
+.history
+*cli*.txt
+.idea
+dist
+build
+MANIFEST
+*-info
+venv

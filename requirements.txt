@@ -1,14 +1,8 @@
-# to communicate with mongoDB
-pymongo
-# just for validators
-jsonschema
+# to make requests and parse results
+requests
 
-# To manage configurations
-configparser
+# for tests
+pytest
 
-# For the res-api service
-flask
-flask_cors
-
-#crossplatform path
-pathlib
+# others
+setuptools

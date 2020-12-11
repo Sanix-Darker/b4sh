@@ -1,3 +1,0 @@
-[b4]
-DATABASE_HOST = mongodb://127.0.0.1:27017
-DATABASE_NAME = b4sh
