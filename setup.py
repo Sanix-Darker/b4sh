@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name="b4sh",
     version=VERSION,
-    scripts=['./scripts/b4sh', './scripts/bh'],
+    scripts=['./scripts/b4sh', './scripts/b'],
     author="Sanix-darker",
     author_email="s4nixd@gmail.com",
     description="Create, use and share bashs commands",
