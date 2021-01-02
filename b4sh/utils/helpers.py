@@ -5,6 +5,8 @@ import readline
 
 def req_get(url):
     """
+    A simple method to make a GET request
+    With a try-except if the request doesn't succeed
 
     :param url:
     :return:
@@ -18,6 +20,8 @@ def req_get(url):
 
 def req_post(url, dat):
     """
+    A simple method to make a POST request
+    With a try-except if the request doesn't succeed
 
     :param url:
     :param dat:
@@ -32,6 +36,7 @@ def req_post(url, dat):
 
 def rlinput(prompt, prefill=''):
     """
+    Same as input  but will add a prefill as a placehoder
 
     :param prompt:
     :param prefill:
@@ -44,21 +49,9 @@ def rlinput(prompt, prefill=''):
         readline.set_startup_hook()
 
 
-def get_stats(payload: dict):
-    """
-
-    :param payload:
-    :return:
-    """
-    print("[=] Stats:")
-    print("[=] ____used_count: {}".format(payload["stats"]["used_count"]))
-    print("[=] ____updated_count: {}".format(payload["stats"]["updated_count"]))
-    print("[=] ____up_vote: {}".format(payload["stats"]["up_vote"]))
-    print("[=] ____down_vote: {}".format(payload["stats"]["down_vote"]))
-
-
 def see_content(payload):
     """
+    A method to print or not the content
 
     :param payload:
     :return:
@@ -70,17 +63,23 @@ def see_content(payload):
 
 def see_stats(payload):
     """
+    Just a print for stats on a b4sh
 
     :param payload:
     :return:
     """
     choice = input("\n[?] > See stats (used, votes...) ? (Y/N): ")
     if choice.lower() == "y" or choice.lower() == "yes":
-        get_stats(payload["result"])
+        print("[=] Stats:")
+        print("[=] ____used_count: {}".format(payload["result"]["stats"]["used_count"]))
+        print("[=] ____updated_count: {}".format(payload["result"]["stats"]["updated_count"]))
+        print("[=] ____up_vote: {}".format(payload["result"]["stats"]["up_vote"]))
+        print("[=] ____down_vote: {}".format(payload["result"]["stats"]["down_vote"]))
 
 
 def run_content(payload):
     """
+    To run the content of a b4sh
 
     :param payload:
     :return:
@@ -94,6 +93,7 @@ def run_content(payload):
 
 def payload_info(key, payload):
     """
+    This method will get infos of a payload
 
     :param key:
     :param payload:
@@ -110,6 +110,7 @@ def payload_info(key, payload):
 
 def print_results(content: dict):
     """
+    Listing results of a request
 
     :param content:
     :return:
@@ -123,6 +124,7 @@ def print_results(content: dict):
 
 def preset_conf(conf_path: str, conf: dict = {}) -> dict:
     """
+    This method is for setting pre-configuration
 
     :param conf_path:
     :param conf:
@@ -143,6 +145,7 @@ def preset_conf(conf_path: str, conf: dict = {}) -> dict:
 
 def ask_set_conf():
     """
+    Just to ask if yes or no we should set conf for unexistance configurations
 
     :return:
     """
@@ -157,6 +160,7 @@ def ask_set_conf():
 
 def get_content():
     """
+    To get the input content
 
     :return:
     """
@@ -180,13 +184,16 @@ def get_format_payload(conf: dict, content_file_path: str = "") -> dict:
     :param content_file_path:
     :return:
     """
-    payload = {"author": conf["author"], "title": rlinput("[?] Title : ", content_file_path.replace("./", "")),
-               "description": input("[?] Description : ")}
+    payload = {
+        "author": conf["author"],
+        "title": rlinput("[?] Title : ", content_file_path.replace("./", "")),
+        "description": input("[?] Description : ")
+    }
     if len(content_file_path) > 2:
         # we check if the path of the shell file exist
         if not path.exists(content_file_path):
             print("[x] The file-path you provided is not correct !")
-            print("[-] Try to write your commands mannualy !")
+            print("[-] Try to write your commands manually !")
             payload["content"] = get_content()
         else:
             print("[+] Getting the content...")
