@@ -4,7 +4,7 @@ Create, Use and share bash commands easily.
 
 ## Requirements
 
-- python (3.x recommend)
+- pip (3.x recommend)
 
 ## How to install
 
@@ -18,21 +18,15 @@ pip3 install b4sh
 $ b4sh -h
 [x] Starting b4sh...
 
-usage: b4sh [-h] [-g GET] [-f FIND] [-c CREATE] [-ls LIST] [-v]
+usage: b (or b4sh) [-h] [-g GET] [-f FIND] [-c CREATE] [-ls LIST] [-v]
 
 optional arguments:
   -h,  --help    Show this help message and exit.
-
   -g,  --get     To get a b4sh by key/id, Ex: b4sh -g apache2_eerft.
-
   -f,  --find    To find a b4sh by name online, Ex: b4sh -f nginx.
-
   -r,  --run     To run directly with the good key/id, Ex: b4sh -r nginx_eedrf4.
-
   -c,  --create  To create a new B4sh, Ex: b4sh -c / Or with a file_path, Ex: b4sh -c script.sh
-
   -ls, --list    To list all available offline/local b4sh shells.
-
   -v,  --version To get the actual version of b4sh.
 ```
 

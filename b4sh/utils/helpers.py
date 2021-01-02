@@ -1,6 +1,7 @@
 # All helpers in the module
 from b4sh import *
 import readline
+from math import ceil
 
 
 def req_get(url):
@@ -116,8 +117,9 @@ def print_results(content: dict):
     :return:
     """
     print("[+] Listing results ({}) :".format(len(content["result"])))
-    for index, elt in enumerate(content["result"]):
-        print("[-] {}-) {}".format(index + 1, elt["key"]))
+    # for index, elt in enumerate(content["result"]):
+    #     print("[-] {}-) {}".format(index + 1, elt["key"]))
+    list_columns(content["result"])
 
     return int(input("\n[?] Your choice (0 to quit):"))
 
@@ -213,7 +215,7 @@ def paste_help():
     :return:
     """
     print("""
-usage: b [-h] [-g GET] [-f FIND] [-c CREATE] [-ls LIST] [-v]
+usage: b (or b4sh) [-h] [-g GET] [-f FIND] [-c CREATE] [-ls LIST] [-v]
 
 optional arguments:
   -h,  --help    Show this help message and exit.
@@ -224,3 +226,38 @@ optional arguments:
   -ls, --list    To list all available offline/local b4sh shells.
   -v,  --version To get the actual version of b4sh.
     """)
+
+
+def list_columns(obj, cols=4, columnwise=True, gap=4):
+    """
+    Print the given list in evenly-spaced columns.
+
+    Parameters
+    ----------
+    obj : list
+        The list to be printed.
+    cols : int
+        The number of columns in which the list should be printed.
+    columnwise : bool, default=True
+        If True, the items in the list will be printed column-wise.
+        If False the items in the list will be printed row-wise.
+    gap : int
+        The number of spaces that should separate the longest column
+        item/s from the next column. This is the effective spacing
+        between columns based on the maximum len() of the list items.
+    """
+
+    sobj = [" " + str(index+1) + "-) " + str(item["key"]) for index, item in enumerate(obj)]
+    if cols > len(sobj):
+        cols = len(sobj)
+    max_len = max([len(item) for item in sobj])
+    if columnwise:
+        cols = int(ceil(float(len(sobj)) / float(cols)))
+    plist = [sobj[i: i+cols] for i in range(0, len(sobj), cols)]
+    if columnwise:
+        if not len(plist[-1]) == cols:
+            plist[-1].extend(['']*(len(sobj) - len(plist[-1])))
+        plist = zip(*plist)
+    printer = '\n'.join([''.join([c.ljust(max_len + gap) for c in p]) for p in plist])
+
+    print(printer)

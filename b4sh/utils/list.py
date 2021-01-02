@@ -1,7 +1,4 @@
 # To list all available bash commands
-import json
-
-from b4sh.settings import *
 from b4sh.utils import *
 from b4sh.utils.get import choose_install
 
