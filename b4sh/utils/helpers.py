@@ -206,7 +206,7 @@ def paste_help():
     :return:
     """
     print("""
-usage: bh [-h] [-g GET] [-f FIND] [-c CREATE] [-ls LIST] [-v]
+usage: b [-h] [-g GET] [-f FIND] [-c CREATE] [-ls LIST] [-v]
 
 optional arguments:
   -h,  --help    Show this help message and exit.
