@@ -1,11 +1,10 @@
-from b4sh.settings import B4SH_DIR
-
 from b4sh import *
 from b4sh.utils import *
 
 
 def cmd_parser(args: object):
     """
+    The command parser method
 
     :param args:
     :return:
